@@ -3,7 +3,7 @@
 
 #include "matrix2d.h"
 
-                                                
+//Parametric constructor                                                
 template<typename T>
 Matrix2D<T>::Matrix2D(unsigned _rows, unsigned _cols, const T& _initial) {
 	mat.resize(_rows);
@@ -14,7 +14,7 @@ Matrix2D<T>::Matrix2D(unsigned _rows, unsigned _cols, const T& _initial) {
 	cols = _cols;
 }
 
-                                         
+//Copy constructor                                         
 template<typename T>
 Matrix2D<T>::Matrix2D(const Matrix2D<T>& rhs) {
 	mat = rhs.mat;
@@ -22,7 +22,7 @@ Matrix2D<T>::Matrix2D(const Matrix2D<T>& rhs) {
 	cols = rhs.get_cols();
 }
 
-                                         
+//General destructor                                         
 template<typename T>
 Matrix2D<T>::~Matrix2D() {}
 
@@ -151,6 +151,40 @@ Matrix2D<T> Matrix2D<T>::transpose() {
 	return result;
 }
 
+template<typename T>
+Matrix2D<T> Matrix2D<T>::identity()
+{
+	if (rows != cols)
+	{
+		throw "Matrix is NOT square, so its identity cannot be determined";
+	}
+
+	Matrix2D<T> result(cols, cols, 0);
+	for (unsigned i = 0; i < cols; i++)
+	{
+		result(i, i) = (T)1;
+	}
+	return result;
+
+}
+
+template<typename T>
+Matrix2D<T> Matrix2D<T>::permutative()
+{
+	if (rows != cols)
+	{
+		throw "Matrix is NOT square, so its permutation cannot be determined";
+	}
+
+	Matrix2D<T> result(cols, cols, 0);
+	for (unsigned i = cols - 1; i > 0; --i)
+	{
+		result(i, cols - 1 - i) = (T)1;
+	}
+	result(0, rows - 1) = (T)1;
+	return result;
+}
+
                                                 
 template<typename T>
 Matrix2D<T> Matrix2D<T>::operator+(const T& rhs) {
@@ -255,6 +289,18 @@ unsigned Matrix2D<T>::get_rows() const {
 template<typename T>
 unsigned Matrix2D<T>::get_cols() const {
 	return this->cols;
+}
+
+template<typename T>
+bool Matrix2D<T>::isSquare() {
+	if (this->rows == this->cols)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 #endif
